@@ -1,0 +1,37 @@
+{
+  "Library" : "test_client",
+  "Contracts": [
+    {
+      "Name": "LoginRequest",
+      "Extends": "RequestBody",
+      "Fields": [
+        {
+          "Name": "login",
+          "Type": "String"
+        },
+        {
+          "Name": "password",
+          "Type": "String"
+        }
+      ]
+    },
+    {
+      "Name" : "RegisterRequest",
+      "Extends" : "RequestBody",
+      "Fields" : [
+        {
+          "Name": "login",
+          "Type": "String"
+        },
+        {
+          "Name": "email",
+          "Type": "String"
+        },
+        {
+          "Name": "age",
+          "Type": "int"
+        }
+      ]
+    }
+  ]
+}
