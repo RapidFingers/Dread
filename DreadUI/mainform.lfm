@@ -3,10 +3,13 @@ object DreadUIForm: TDreadUIForm
   Height = 600
   Top = 30
   Width = 800
+  ActiveControl = ContractTree
   Caption = 'DreadUIForm'
   ClientHeight = 600
   ClientWidth = 800
+  OnActivate = FormActivate
   Position = poScreenCenter
+  Visible = False
   object MainToolbar: TToolBar
     Left = 0
     Height = 48
@@ -53,15 +56,17 @@ object DreadUIForm: TDreadUIForm
         Top = 0
         Width = 298
         Anchors = [akTop, akLeft, akRight, akBottom]
-        PopupMenu = TreeMenu
+        AutoExpand = True
         ReadOnly = True
         ScrollBars = ssAutoBoth
         TabOrder = 0
-        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        OnChange = ContractTreeChange
+        OnContextPopup = ContractTreeContextPopup
+        Options = [tvoAutoExpand, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         Items.Data = {
           F9FFFFFF020002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000
-          000000080000005265717565737473FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-          000000000000000009000000526573706F6E736573
+          00000009000000436F6E747261637473FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          000000000000000000070000004D6574686F6473
         }
       end
     end
@@ -74,36 +79,59 @@ object DreadUIForm: TDreadUIForm
       ClientWidth = 495
       ClientHeight = 560
       Constraints.MinWidth = 300
-      object ContractValueList: TListView
+      object ContractEditPanel: TPanel
         Left = 0
-        Height = 555
+        Height = 552
         Top = 0
-        Width = 500
+        Width = 496
         Anchors = [akTop, akLeft, akRight, akBottom]
-        AutoWidthLastColumn = True
-        Columns = <        
-          item
-            AutoSize = True
-            Caption = 'Name'
-            MinWidth = 200
-            Width = 200
-          end        
-          item
-            Caption = 'Value'
-            Width = 298
-          end>
-        ReadOnly = True
-        RowSelect = True
-        ScrollBars = ssAutoBoth
+        BevelOuter = bvNone
+        Caption = 'ContractEditPanel'
+        ClientHeight = 552
+        ClientWidth = 496
+        ParentColor = False
         TabOrder = 0
-        ViewStyle = vsReport
+        object ContractValueList: TListView
+          Left = 0
+          Height = 649
+          Top = 24
+          Width = 500
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          AutoWidthLastColumn = True
+          Columns = <          
+            item
+              AutoSize = True
+              Caption = 'Name'
+              MinWidth = 200
+              Width = 47
+            end          
+            item
+              Caption = 'Value'
+              Width = 449
+            end>
+          ReadOnly = True
+          RowSelect = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 0
+          ViewStyle = vsReport
+        end
+        object NodeNameEdit: TEdit
+          Left = 1
+          Height = 23
+          Top = -1
+          Width = 487
+          Anchors = [akTop, akLeft, akRight]
+          OnKeyPress = NodeNameEditKeyPress
+          TabOrder = 1
+          TextHint = 'Contract name'
+        end
       end
     end
   end
   object MainImages: TImageList
     Height = 32
     Width = 32
-    Left = 496
+    left = 496
     Bitmap = {
       4C690200000020000000200000000000000000000000000000000000000D0000
       003E0000003E0000003E0000003E0000003E0000003E0000003E0000003E0000
@@ -365,7 +393,7 @@ object DreadUIForm: TDreadUIForm
     }
   end
   object MainActions: TActionList
-    Left = 427
+    left = 427
     object NewAction: TAction
       Caption = 'New'
       ImageIndex = 0
@@ -375,16 +403,32 @@ object DreadUIForm: TDreadUIForm
       Caption = 'Open'
       OnExecute = OpenActionExecute
     end
-    object NewRequest: TAction
-      Caption = 'New request'
-      OnExecute = NewRequestExecute
+    object NewContractAction: TAction
+      Caption = 'New contract'
+      OnExecute = NewContractActionExecute
+    end
+    object NewMethodAction: TAction
+      Caption = 'New response'
+      OnExecute = NewMethodActionExecute
     end
   end
-  object TreeMenu: TPopupMenu
-    Left = 16
-    Top = 112
-    object MenuItem1: TMenuItem
-      Action = NewRequest
+  object ContractPopup: TPopupMenu
+    left = 40
+    top = 112
+    object NewContractMenuItem: TMenuItem
+      Action = NewContractAction
     end
+  end
+  object MethodPopup: TPopupMenu
+    left = 152
+    top = 112
+    object NewMethodMenuItem: TMenuItem
+      Action = NewMethodAction
+      Caption = 'New method'
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    left = 656
+    top = 248
   end
 end
