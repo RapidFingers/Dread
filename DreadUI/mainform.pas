@@ -1,4 +1,4 @@
-unit mainform;
+unit mainform_unit;
 
 {$mode objfpc}{$H+}
 
@@ -19,7 +19,10 @@ type
   { TDreadUIForm }
 
   TDreadUIForm = class(TForm)
+    NewContractFieldAction: TAction;
+    Action2: TAction;
     ContractEditPanel: TPanel;
+    AddFieldMenuItem: TMenuItem;
     NodeNameEdit: TEdit;
     ContractValueList: TListView;
     NewMethodAction: TAction;
@@ -35,11 +38,12 @@ type
     MainSplitter: TPairSplitter;
     LeftSplitterSide: TPairSplitterSide;
     MethodPopup: TPopupMenu;
-    PopupMenu1: TPopupMenu;
+    ContractFieldPopup: TPopupMenu;
     RightSplitterSide: TPairSplitterSide;
     ContractPopup: TPopupMenu;
     NewFileButton: TToolButton;
     OpenFileButton: TToolButton;
+    procedure NewContractFieldActionExecute(Sender: TObject);
     procedure NodeNameEditKeyPress(Sender: TObject; var Key: char);
     procedure ContractTreeChange(Sender: TObject; Node: TTreeNode);
     procedure ContractTreeContextPopup(Sender: TObject; MousePos: TPoint;
@@ -50,8 +54,8 @@ type
     procedure NewMethodActionExecute(Sender: TObject);
     procedure OpenActionExecute(Sender: TObject);
   private
-    FRequestNode: TTreeNode;
-    FResponseNode: TTreeNode;
+    FContractNode: TTreeNode;
+    FMethodNode: TTreeNode;
     FCurrentNode : TBaseNode;
   public
 
@@ -68,8 +72,8 @@ implementation
 
 procedure TDreadUIForm.FormActivate(Sender: TObject);
 begin
-  FRequestNode := ContractTree.Items[0];
-  FResponseNode := ContractTree.Items[1];
+  FContractNode := ContractTree.Items[0];
+  FMethodNode := ContractTree.Items[1];
   ContractEditPanel.Hide;
 end;
 
@@ -84,13 +88,13 @@ begin
   begin
     node.Selected := True;
 
-    if ((node = FRequestNode) or (node.Parent = FRequestNode)) then
+    if ((node = FContractNode) or (node.Parent = FContractNode)) then
     begin
       ContractTree.PopupMenu := ContractPopup;
       Handled := True;
       ContractPopup.PopUp;
     end
-    else if ((node = FResponseNode) or (node.Parent = FResponseNode)) then
+    else if ((node = FMethodNode) or (node.Parent = FMethodNode)) then
     begin
       ContractTree.PopupMenu := MethodPopup;
       Handled := True;
@@ -101,13 +105,19 @@ end;
 
 procedure TDreadUIForm.ContractTreeChange(Sender: TObject; Node: TTreeNode);
 begin
-  if ((Node = FRequestNode) or (Node = FResponseNode)) then
+  if ((Node = FContractNode) or (Node = FMethodNode)) then
   begin
     ContractEditPanel.Hide;
   end else
   begin
     FCurrentNode := TBaseNode(Node.Data);
     NodeNameEdit.Text:= Node.Text;
+
+    if FCurrentNode is TContractNode then
+    begin
+      ContractEditPanel.PopupMenu := ContractFieldPopup;
+    end;
+
     ContractEditPanel.Show;
   end;
 end;
@@ -129,9 +139,14 @@ procedure TDreadUIForm.NewContractActionExecute(Sender: TObject);
 var node : TContractNode;
   treeNode: TTreeNode;
 begin
-  treeNode := ContractTree.Items.AddChild(FRequestNode, NewContractStr);
+  treeNode := ContractTree.Items.AddChild(FContractNode, NewContractStr);
   node := TContractNode.Create(treeNode);
   treeNode.Data := node;
+end;
+
+procedure TDreadUIForm.NewContractFieldActionExecute(Sender: TObject);
+begin
+
 end;
 
 procedure TDreadUIForm.NewMethodActionExecute(Sender: TObject);
@@ -139,7 +154,7 @@ var
   node: TMethodNode;
   treeNode: TTreeNode;
 begin
-  treeNode := ContractTree.Items.AddChild(FResponseNode, NewMethodStr);
+  treeNode := ContractTree.Items.AddChild(FMethodNode, NewMethodStr);
   node := TMethodNode.Create(treeNode);
   treeNode.Data := node;
 end;

@@ -1,0 +1,12 @@
+object FieldForm: TFieldForm
+  Left = 0
+  Height = 400
+  Top = 0
+  Width = 500
+  BorderStyle = bsDialog
+  Caption = 'FieldForm'
+  ClientHeight = 400
+  ClientWidth = 500
+  Position = poOwnerFormCenter
+  Visible = False
+end
