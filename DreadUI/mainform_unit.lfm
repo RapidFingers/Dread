@@ -9,7 +9,6 @@ object DreadUIForm: TDreadUIForm
   ClientWidth = 800
   OnActivate = FormActivate
   Position = poScreenCenter
-  LCLVersion = '1.8.2.0'
   Visible = False
   object MainToolbar: TToolBar
     Left = 0

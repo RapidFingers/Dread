@@ -30,7 +30,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="dreadui.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -50,11 +50,21 @@
       <Unit4>
         <Filename Value="fieldform_unit.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="FieldForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit4>
       <Unit5>
         <Filename Value="mainform_unit.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="DreadUIForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="fieldinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
